@@ -76,25 +76,83 @@ col1.metric("Model Accuracy", f"{round(model.score(X_test, y_test)*100,2)}%")
 col2.metric("Total Patients", len(data))
 col3.metric("Features Used", X.shape[1])
 
-# graphs
-st.subheader("Data Insights")
+
+st.subheader(" Data Insights Dashboard")
+
+# Use seaborn style
+sns.set_style("whitegrid")
 
 col1, col2 = st.columns(2)
 
+# 1. Heart Rate Distribution
 with col1:
     if 'Heart Rate' in data.columns:
         fig, ax = plt.subplots()
-        data['Heart Rate'].hist(ax=ax)
-        ax.set_title("Heart Rate Distribution")
+
+        sns.histplot(
+            data['Heart Rate'],
+            kde=True,
+            bins=30
+        )
+
+        ax.set_title("❤️ Heart Rate Distribution", fontsize=14)
+        ax.set_xlabel("Heart Rate (bpm)")
+        ax.set_ylabel("Count")
+
         st.pyplot(fig)
 
+# 2. Risk Distribution
 with col2:
     if 'Risk Category' in data.columns:
         fig, ax = plt.subplots()
-        sns.countplot(x='Risk Category', data=data, ax=ax)
-        ax.set_title("Risk Distribution")
+
+        sns.countplot(
+            x='Risk Category',
+            data=data
+        )
+
+        ax.set_title(" Risk Category Distribution", fontsize=14)
+        ax.set_xlabel("Risk Level")
+        ax.set_ylabel("Count")
+
+        ax.set_xticklabels(["Low Risk", "High Risk"])
+
         st.pyplot(fig)
         
+# 3. Temperature vs Heart Rate
+st.subheader(" Relationship Analysis")
+
+if 'Heart Rate' in data.columns and 'Body Temperature' in data.columns:
+    fig, ax = plt.subplots()
+
+    sns.scatterplot(
+        x=data['Heart Rate'],
+        y=data['Body Temperature'],
+        hue=data['Risk Category']
+    )
+
+    ax.set_title(" Heart Rate vs Temperature")
+    ax.set_xlabel("Heart Rate")
+    ax.set_ylabel("Temperature")
+
+    st.pyplot(fig)
+
+# 4. Correlation Heatmap
+st.subheader("Feature Correlation")
+
+numeric_data = data.select_dtypes(include=['int64', 'float64'])
+
+fig, ax = plt.subplots(figsize=(10,6))
+
+sns.heatmap(
+    numeric_data.corr(),
+    annot=True
+)
+
+ax.set_title("Feature Correlation Matrix")
+
+st.pyplot(fig)
+
 # input sidebar
 st.sidebar.header("Patient Input")
 
