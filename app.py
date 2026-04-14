@@ -118,41 +118,7 @@ with col2:
         ax.set_xticklabels(["Low Risk", "High Risk"])
 
         st.pyplot(fig)
-        
-# 3. Temperature vs Heart Rate
-st.subheader(" Relationship Analysis")
-
-if 'Heart Rate' in data.columns and 'Body Temperature' in data.columns:
-    fig, ax = plt.subplots()
-
-    sns.scatterplot(
-        x=data['Heart Rate'],
-        y=data['Body Temperature'],
-        hue=data['Risk Category']
-    )
-
-    ax.set_title(" Heart Rate vs Temperature")
-    ax.set_xlabel("Heart Rate")
-    ax.set_ylabel("Temperature")
-
-    st.pyplot(fig)
-
-# 4. Correlation Heatmap
-st.subheader("Feature Correlation")
-
-numeric_data = data.select_dtypes(include=['int64', 'float64'])
-
-fig, ax = plt.subplots(figsize=(10,6))
-
-sns.heatmap(
-    numeric_data.corr(),
-    annot=True
-)
-
-ax.set_title("Feature Correlation Matrix")
-
-st.pyplot(fig)
-
+ 
 # input sidebar
 st.sidebar.header("Patient Input")
 
