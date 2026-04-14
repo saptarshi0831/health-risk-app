@@ -43,7 +43,7 @@ def load_data():
     
     data = pd.read_csv(filename)
 
-    data = data.drop(columns=['Patient ID', 'Timestamp'])
+    data = data.drop(columns=['Patient ID', 'Timestamp'], errors='ignore')
     data['Gender'] = data['Gender'].map({'Male': 1, 'Female': 0})
     data['Risk Category'] = data['Risk Category'].map({
         'Low Risk': 0,
